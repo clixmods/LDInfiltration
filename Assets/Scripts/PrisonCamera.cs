@@ -25,6 +25,8 @@ public class PrisonCamera : MonoBehaviour
 
     private FieldOfView _FOV;
 
+    #region MonoBehaviour
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,23 +36,17 @@ public class PrisonCamera : MonoBehaviour
         AngleAToTarget.y -= angleRotate;
         AngleBToTarget.y += angleRotate;
         //_targetAngleA = (int)(angleRotate + ogRota.y);
-       // _targetAngleB = (int)(angleRotate/-2 + ogRota.y);
-    
-        
+        // _targetAngleB = (int)(angleRotate/-2 + ogRota.y);
+        GenerateTargetAngle();
+
     }
+
+   
 
     private void OnValidate()
     {
         _FOV ??= GetComponent<FieldOfView>();
-        AngleAToTarget = ogRota;
-        AngleBToTarget = ogRota;
-
-        AngleBToTarget = Quaternion.Euler(AngleBToTarget.eulerAngles.x, AngleBToTarget.eulerAngles.y + angleRotate,
-            AngleBToTarget.eulerAngles.z);
-        AngleAToTarget = Quaternion.Euler(AngleAToTarget.eulerAngles.x, AngleAToTarget.eulerAngles.y - angleRotate,
-            AngleAToTarget.eulerAngles.z);
-
-
+        GenerateTargetAngle();
     }
 
     // Update is called once per frame
@@ -72,7 +68,18 @@ public class PrisonCamera : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Debug.DrawLine(transform.position, transform.position + AngleBToTarget.eulerAngles , Color.green);
-        Debug.DrawRay(transform.position,AngleBToTarget.eulerAngles.normalized,Color.red);
+    }
+
+    #endregion
+    
+    void GenerateTargetAngle()
+    {
+        AngleAToTarget = ogRota;
+        AngleBToTarget = ogRota;
+
+        AngleBToTarget = Quaternion.Euler(AngleBToTarget.eulerAngles.x, AngleBToTarget.eulerAngles.y + angleRotate,
+            AngleBToTarget.eulerAngles.z);
+        AngleAToTarget = Quaternion.Euler(AngleAToTarget.eulerAngles.x, AngleAToTarget.eulerAngles.y - angleRotate,
+            AngleAToTarget.eulerAngles.z);
     }
 }

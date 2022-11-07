@@ -21,7 +21,7 @@ namespace Level.Editor
             nameLevel.Add("Manual Position");
             for (int i = 0; i < length; i++)
             {
-                nameLevel.Add($" [{i}] : {wpSerializedProperty.GetArrayElementAtIndex(i).objectReferenceValue.name}");
+                nameLevel.Add($" [{i}] : Position)");
             }
             EditorGUI.LabelField(position,"Start Waypoint");
             Rect nextPos = position;

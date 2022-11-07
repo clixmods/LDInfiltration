@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Character;
 using UnityEngine.ProBuilder.MeshOperations;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -41,12 +42,14 @@ public class FieldOfView : MonoBehaviour {
 	
 	void Start()
 	{
+		
 		_obstacleMask = LayerMask.GetMask("Obstacles");
 		_targetMask = LayerMask.GetMask("Player");
 
 		_meshResolution = 2;
 		
 		_viewMeshFilter = GetComponent<MeshFilter>();
+		
 		viewMesh = new Mesh ();
 		viewMesh.name = "View Mesh";
 		_viewMeshFilter.mesh = viewMesh;
@@ -54,6 +57,11 @@ public class FieldOfView : MonoBehaviour {
 		StartCoroutine ("FindTargetsWithDelay", .2f);
 	}
 
+	private void OnValidate()
+	{
+		if(_viewMeshFilter != null)
+			_viewMeshFilter.hideFlags = HideFlags.HideInInspector;
+	}
 
 	IEnumerator FindTargetsWithDelay(float delay) {
 		while (true) {
@@ -71,7 +79,9 @@ public class FieldOfView : MonoBehaviour {
 		{
 			foreach (var target in _visibleTargets)
 			{
-				Destroy(target.gameObject);
+				target.GetComponent<Player>().Restart();
+				
+				
 			}
 		}
 	}

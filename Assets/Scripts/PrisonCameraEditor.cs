@@ -2,6 +2,8 @@
 using UnityEditor;
 using UnityEngine;
 
+
+
 [CustomEditor(typeof(PrisonCamera))]
 public class PrisonCameraEditor : Editor
 {
@@ -12,12 +14,12 @@ public class PrisonCameraEditor : Editor
     private PrisonCamera _self;
     private void OnEnable()
     {
+        if (Application.isPlaying) return;
         _self ??= (PrisonCamera)target;
+        
         CreatePreviewFov();
     }
-
    
-
     private void OnDisable()
     {
         DestroyPreviewFov();
@@ -25,10 +27,9 @@ public class PrisonCameraEditor : Editor
 
     private void OnValidate()
     {
+        if (Application.isPlaying) return;
         CreatePreviewFov();
         UpdatePreview();
-
-        //_serializedObjectPreviewFOV.Update();
     }
 
     private void OnDestroy()
@@ -38,41 +39,24 @@ public class PrisonCameraEditor : Editor
 
     private void UpdatePreview()
     {
-       // _previewFOV.transform.localPosition = Vector3.zero;
-       // _previewFOV.transform.localRotation = Quaternion.identity;
-       
-       //_previewFOV.transform.position = _self.transform.position;
-      // _previewFOV.transform.rotation = _self.transform.rotation;
         var component = _previewFOV.GetComponent<FieldOfView>();
-        component.Angle = serializedObject.FindProperty("angleRotate").floatValue*3.14f + (_self.GetComponent<FieldOfView>().Angle - serializedObject.FindProperty("angleRotate").floatValue) ;
-            
-            
+        float angleOfFOV = _self.GetComponent<FieldOfView>().Angle; 
+        float angleRotate = serializedObject.FindProperty("angleRotate").floatValue;
+        component.Angle = angleRotate * Mathf.PI + ( angleOfFOV - angleRotate) ;
         component.Radius = _self.GetComponent<FieldOfView>().Radius;
     }
     private void CreatePreviewFov()
     {
-        
-        if (_previewFOV == null)
-        {
-            _previewFOV = Instantiate(new GameObject(), Vector3.zero, Quaternion.identity, null);
-            _previewFOV.transform.position = _self.transform.position;
-            _previewFOV.transform.rotation = _self.transform.rotation;
-
-
-            _previewFOV.layer = LayerMask.GetMask("TransparentFX");
-            
-            //_previewFOV.hideFlags = HideFlags.HideInHierarchy;
-            var oof = _previewFOV.AddComponent<FieldOfView>();
-            
-            // Bounds carBounds = oof.viewMesh.bounds;
-            // Vector3 whereYouWantMe = _self.transform.position;
-            // Vector3 offset = _previewFOV.transform.position - _previewFOV.transform.TransformPoint(carBounds.center);
-            // _previewFOV.transform.position = whereYouWantMe + offset;
-            
-            oof.SetMaterial(mtlPreviewFOV);
-        }
+        if (_previewFOV != null) return;
+        _previewFOV = new GameObject();
+        _previewFOV.name = "Preview Field Of View";
+        _previewFOV.transform.position = _self.transform.position;
+        _previewFOV.transform.rotation = _self.transform.rotation;
+        _previewFOV.layer = LayerMask.GetMask("TransparentFX");
+        //_previewFOV.hideFlags = HideFlags.HideInHierarchy;
+        var oof = _previewFOV.AddComponent<FieldOfView>();
+        oof.SetMaterial(mtlPreviewFOV);
     }
-
     private void DestroyPreviewFov()
     {
         if (_previewFOV != null)
@@ -80,9 +64,9 @@ public class PrisonCameraEditor : Editor
             DestroyImmediate(_previewFOV);
         }
     }
-
     private void OnSceneGUI()
     {
+        if (Application.isPlaying) return;
         UpdatePreview();
     }
 }
