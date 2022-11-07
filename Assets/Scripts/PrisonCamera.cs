@@ -24,7 +24,7 @@ public class PrisonCamera : MonoBehaviour
     private float timeCount;
 
     private FieldOfView _FOV;
-    private FieldOfView _previewFOV;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,8 +35,7 @@ public class PrisonCamera : MonoBehaviour
         AngleBToTarget.y += angleRotate;
         //_targetAngleA = (int)(angleRotate + ogRota.y);
        // _targetAngleB = (int)(angleRotate/-2 + ogRota.y);
-        if(_previewFOV != null)
-            Destroy(_previewFOV.transform);
+    
         
     }
 
@@ -51,18 +50,7 @@ public class PrisonCamera : MonoBehaviour
         AngleAToTarget = Quaternion.Euler(AngleAToTarget.eulerAngles.x, AngleAToTarget.eulerAngles.y - angleRotate,
             AngleAToTarget.eulerAngles.z);
 
-        _previewFOV = GetComponentInChildren<FieldOfView>();
-        if (_previewFOV != _FOV)
-        {
-            
-            _previewFOV.transform.localPosition = Vector3.zero;
-            _previewFOV.transform.localRotation = Quaternion.identity;
-            _previewFOV.Angle = angleRotate;
-            _previewFOV.Radius = GetComponent<FieldOfView>().Radius;
-            
-        }
-        _previewFOV ??= Instantiate(new GameObject(), Vector3.zero, quaternion.identity, transform).AddComponent<FieldOfView>();
-        
+
     }
 
     // Update is called once per frame

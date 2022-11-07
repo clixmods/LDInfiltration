@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 560825945ae6484e8f5b1dd85c667fb5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mtlPreviewFOV: {fileID: 2100000, guid: dc5060294aabcc140900bf884271a4f2, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

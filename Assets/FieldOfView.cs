@@ -209,4 +209,9 @@ public class FieldOfView : MonoBehaviour {
 		}
 	}
 
+	public void SetMaterial(Material newMtl)
+	{
+		GetComponent<MeshRenderer>().material = newMtl;
+	}
+
 }
