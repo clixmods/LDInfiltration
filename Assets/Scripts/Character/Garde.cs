@@ -1,24 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Level;
 using UnityEngine;
 
-namespace Character
-{
-    /*
- *
- * 
-enum patternBehavior : 
-Simple :  une fois qu’il a atteint le dernier waypoint, le prochain sera le premier de la liste
-AllerRetour : Une fois qu’il a atteint le dernier waypoint, il refait le chemin à l’inverse 
- */
+
+
     public enum PatternBehavior
     {
+        /// <summary>
+        /// Simple :  une fois qu’il a atteint le dernier waypoint, le prochain sera le premier de la liste
+        /// </summary>
         Simple,
+        /// <summary>
+        /// AllerRetour : Une fois qu’il a atteint le dernier waypoint, il refait le chemin à l’inverse 
+        /// </summary>
         AllerRetour
     }
 
+    [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(FieldOfView))]
     public class Garde : Character
     {
@@ -27,7 +26,7 @@ AllerRetour : Une fois qu’il a atteint le dernier waypoint, il refait le chemi
 
         public Vector3[] Waypoints => _wayPoints;
     
-        [SerializeField, WaypointIndex] private int _startWaypointIndex;
+        [SerializeField, WaypointIndex] private int _startWaypointIndex = -1;
         private int _currentIndexWaypoint;
         private FieldOfView _fieldOfView;
  
@@ -48,8 +47,19 @@ AllerRetour : Une fois qu’il a atteint le dernier waypoint, il refait le chemi
             _fieldOfView ??= GetComponent<FieldOfView>();
             if (!Application.isPlaying)
             {
-                if(_startWaypointIndex != -1)
+                if (_startWaypointIndex != -1)
+                {
                     transform.position = _wayPoints[_startWaypointIndex];
+                    if (_wayPoints.Length > _startWaypointIndex + 1)
+                    {
+                        transform.LookAt(_wayPoints[_startWaypointIndex+1]);
+                    }
+                    else if (_startWaypointIndex - 1 >= 0)
+                    {
+                        transform.LookAt(_wayPoints[_startWaypointIndex-1]);
+                    }
+                }
+                    
             }
         
         }
@@ -80,4 +90,3 @@ AllerRetour : Une fois qu’il a atteint le dernier waypoint, il refait le chemi
 
    
     }
-}

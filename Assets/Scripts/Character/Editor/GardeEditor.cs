@@ -1,16 +1,30 @@
-﻿using System;
-using Character;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
-    
+
     [CustomEditor(typeof(Garde))]
-    public class GardeEditor : Editor
+    public class GardeEditor : UnityEditor.Editor
     {
         private bool _foldoutFOV;
         private bool _foldSO;
         private Garde myTarget;
-        private Editor _editorFOV;
-     
+        private UnityEditor.Editor _editorFOV;
+
+
+        [MenuItem("GameObject/Gameplay Element/Garde", false, 1)]
+        static void CreateGarde(MenuCommand menuCommand)
+        {
+            // Create a custom game object
+            GameObject go = new GameObject("Garde");
+            GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
+            // Register the creation in the undo system
+            Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
+            Selection.activeObject = go;
+            go.AddComponent<Garde>();
+            var viewModel = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            viewModel.name = "viewModel";
+            viewModel.transform.parent = go.transform;
+       
+        }
         public override void OnInspectorGUI()
         {
             
@@ -45,6 +59,7 @@ using UnityEngine;
             using (var check = new EditorGUI.ChangeCheckScope())
             {
                 var waypoints = serializedObject.FindProperty("_wayPoints");
+                if (waypoints.arraySize == 0) return;
                 Vector3[] newPosition = new Vector3[myTarget.Waypoints.Length];
                 for (int i = 0; i < myTarget.Waypoints.Length; i++)
                 {
@@ -63,3 +78,4 @@ using UnityEngine;
         
         }
     }
+

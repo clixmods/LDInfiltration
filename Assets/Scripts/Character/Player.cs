@@ -1,12 +1,17 @@
 using UnityEngine;
 
-namespace Character
-{
+
+    [RequireComponent(typeof(CapsuleCollider))]
     public class Player : Character
     {
-
-
-
+        
+        public override void Start()
+        {
+            base.Start();
+            gameObject.layer = LayerMask.NameToLayer("Player");
+            gameObject.tag = "Player";
+        }
+        
         public void Restart()
         {
             transform.position = InitialPosition;
@@ -37,4 +42,4 @@ namespace Character
         
         }
     }
-}
+

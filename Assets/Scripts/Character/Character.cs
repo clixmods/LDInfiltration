@@ -1,7 +1,6 @@
 using UnityEngine;
 
-namespace Character
-{
+
     [RequireComponent(typeof(Rigidbody))]
     [SelectionBase]
     public class Character : MonoBehaviour
@@ -31,4 +30,4 @@ namespace Character
         
         }
     }
-}
+
