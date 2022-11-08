@@ -1,9 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEditor;
-namespace DefaultNamespace
-{
-    
+
+    [CustomEditor(typeof(EndgameManager))]
     public class EndgameManagerEditor : Editor
     {
         [MenuItem("GameObject/Gameplay Element/Trigger Endgame", false, 1)]
@@ -27,10 +26,9 @@ namespace DefaultNamespace
           
         }
 
-        private void OnEnable()
+        private void OnSceneGUI()
         {
             var myObject = (EndgameManager)target;
             myObject.name = "Endgame Trigger";
         }
     }
-}
