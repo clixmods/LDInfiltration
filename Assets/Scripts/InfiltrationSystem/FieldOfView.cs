@@ -33,9 +33,9 @@ using UnityEngine.SceneManagement;
 		private float _meshResolution = 2;
 		private int _edgeResolveIterations;
 		private float _edgeDstThreshold;
-
+	[HideInInspector]
 		public MeshFilter _viewMeshFilter;
-		public Mesh viewMesh;
+		[HideInInspector]	public Mesh viewMesh;
 
 	
 	
